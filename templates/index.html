@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberShield | Scam Detection System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Hacker-themed CSS */
+        :root {
+            --main-bg-color: #0a0a0a;
+            --secondary-bg-color: #111;
+            --terminal-green: #00ff00;
+            --terminal-blue: #0077ff;
+            --terminal-red: #ff3333;
+            --terminal-yellow: #ffcc00;
+            --text-color: #e0e0e0;
+            --border-color: #333;
+            --glow-color: rgba(0, 255, 0, 0.5);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', monospace;
+        }
+
+        body {
+            background-color: var(--main-bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            background-image:
+                radial-gradient(rgba(0, 255, 0, 0.1) 1px, transparent 1px),
+                radial-gradient(rgba(0, 255, 0, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            background-position: 0 0, 25px 25px;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Navbar */
+        .navbar {
+            background-color: var(--secondary-bg-color);
+            border-bottom: 1px solid var(--terminal-green);
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0, 255, 0, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .navbar-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 90%;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--terminal-green);
+            text-shadow: 0 0 10px var(--glow-color);
+            display: flex;
+            align-items: center;
+        }
+
+        .logo i {
+            margin-right: 10px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-left: 20px;
+        }
+
+        .nav-links a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-size: 16px;
+            transition: color 0.3s;
+            padding: 5px 10px;
+            border-radius: 3px;
+        }
+
+        .nav-links a:hover {
+            color: var(--terminal-green);
+            background-color: rgba(0, 255, 0, 0.1);
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 50px 0;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            color: var(--terminal-green);
+            margin-bottom: 20px;
+            text-shadow: 0 0 15px var(--glow-color);
+            letter-spacing: 2px;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            color: var(--text-color);
+        }
+
+        .typing-effect::after {
+            content: "|";
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* Detection Panels */
+        .detection-panels {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .panel {
+            flex: 1;
+            min-width: 300px;
+            background-color: var(--secondary-bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            padding: 25px;
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .panel:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0, 255, 0, 0.2);
+        }
+
+        .panel-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .panel-icon {
+            font-size: 24px;
+            margin-right: 15px;
+            color: var(--terminal-green);
+        }
+
+        .panel-title {
+            font-size: 1.5rem;
+            color: var(--terminal-green);
+        }
+
+        .panel-content {
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--terminal-blue);
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 12px;
+            background-color: #0c0c0c;
+            border: 1px solid var(--border-color);
+            border-radius: 3px;
+            color: var(--terminal-green);
+            font-size: 16px;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: var(--terminal-green);
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+        }
+
+        .file-input-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        .file-input-wrapper input[type=file] {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            cursor: pointer;
+            width: 100%;
+            height: 100%;
+        }
+
+        .file-input-button {
+            display: inline-block;
+            padding: 12px 20px;
+            background-color: rgba(0, 255, 0, 0.1);
+            color: var(--terminal-green);
+            border: 1px solid var(--terminal-green);
+            border-radius: 3px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            width: 100%;
+            text-align: center;
+        }
+
+        .file-input-button:hover {
+            background-color: rgba(0, 255, 0, 0.2);
+        }
+
+        .file-name {
+            margin-top: 10px;
+            font-size: 14px;
+            color: var(--text-color);
+            word-break: break-all;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 25px;
+            background-color: transparent;
+            color: var(--terminal-green);
+            border: 1px solid var(--terminal-green);
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            width: 100%;
+        }
+
+        .btn:hover {
+            background-color: var(--terminal-green);
+            color: var(--main-bg-color);
+            box-shadow: 0 0 15px var(--glow-color);
+        }
+
+        .btn i {
+            margin-right: 8px;
+        }
+
+        /* Results Section */
+        .results {
+            background-color: var(--secondary-bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            padding: 25px;
+            margin-bottom: 50px;
+            display: none;
+        }
+
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .results-title {
+            font-size: 1.5rem;
+            color: var(--terminal-green);
+        }
+
+        .results-content {
+            font-family: 'Courier New', monospace;
+            background-color: #0c0c0c;
+            padding: 15px;
+            border-radius: 3px;
+            color: var(--terminal-green);
+            height: 300px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+
+        .terminal-text {
+            animation: typing 0.05s steps(1);
+        }
+
+        @keyframes typing {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 50px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .footer p {
+            color: var(--text-color);
+            font-size: 14px;
+        }
+
+        .footer a {
+            color: var(--terminal-green);
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Matrix Rain Effect */
+        .matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.07;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .detection-panels {
+                flex-direction: column;
+            }
+
+            .panel {
+                min-width: 100%;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .navbar-container {
+                flex-direction: column;
+            }
+
+            .nav-links {
+                margin-top: 15px;
+            }
+
+            .nav-links li {
+                margin: 0 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Matrix Background Effect Canvas -->
+    <canvas class="matrix-bg" id="matrix"></canvas>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <div class="logo">
+                <i class="fas fa-shield-alt"></i> CyberShield
+            </div>
+            <ul class="nav-links">
+                <li><a href="#"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="#"><i class="fas fa-info-circle"></i> About</a></li>
+                <li><a href="#"><i class="fas fa-chart-line"></i> Stats</a></li>
+                <li><a href="#"><i class="fas fa-user-shield"></i> Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1 class="typing-effect">SCAM DETECTION SYSTEM</h1>
+            <p>Advanced threat detection powered by machine learning algorithms. Identify and neutralize scam attempts before they compromise your security.</p>
+        </header>
+
+        <!-- Detection Panels -->
+        <div class="detection-panels">
+            <!-- File Detection Panel -->
+            <div class="panel">
+                <div class="panel-header">
+                    <div class="panel-icon">
+                        <i class="fas fa-file-code"></i>
+                    </div>
+                    <h2 class="panel-title">File Analysis</h2>
+                </div>
+                <div class="panel-content">
+                    <p>Upload suspicious files for deep analysis. Our system will scan for malicious code, hidden scripts, and other threats.</p>
+                </div>
+                <form id="file-form" action="/detect-file" method="post" enctype="multipart/form-data">
+                    <div class="input-group">
+                        <label for="file-upload">Select File to Analyze</label>
+                        <div class="file-input-wrapper">
+                            <div class="file-input-button">
+                                <i class="fas fa-upload"></i> Choose File
+                            </div>
+                            <input type="file" id="file-upload" name="file">
+                        </div>
+                        <div id="file-name" class="file-name"></div>
+                    </div>
+                    <button type="submit" class="btn">
+                        <i class="fas fa-search"></i> Analyze File
+                    </button>
+                </form>
+            </div>
+
+            <!-- URL Detection Panel -->
+            <div class="panel">
+                <div class="panel-header">
+                    <div class="panel-icon">
+                        <i class="fas fa-link"></i>
+                    </div>
+                    <h2 class="panel-title">URL Analysis</h2>
+                </div>
+                <div class="panel-content">
+                    <p>Check suspicious links for phishing attempts, malware distribution, and other web-based threats.</p>
+                </div>
+                <form id="url-form" action="/detect-url" method="post">
+                    <div class="input-group">
+                        <label for="url-input">Enter URL to Analyze</label>
+                        <input type="url" id="url-input" name="url" class="input-field" placeholder="https://example.com" required>
+                    </div>
+                    <button type="submit" class="btn">
+                        <i class="fas fa-search"></i> Analyze URL
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Results Section (Initially Hidden) -->
+        <div class="results" id="results-section">
+            <div class="results-header">
+                <h2 class="results-title">Analysis Results</h2>
+                <button id="close-results" class="btn" style="width: auto; padding: 5px 10px;">
+                    <i class="fas fa-times"></i>
+                    {% if msg %}
+                        <p>{{ msg }}</p>
+                    {% endif %}
+                </button>
+            </div>
+            <div class="results-content" id="results-content">
+                > Initializing scan...
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>&copy; 2025 CyberShield | Scam Detection System. All rights reserved.</p>
+            <p>Developed by <a href="#">Security Research Team</a></p>
+        </footer>
+    </div>
+
+    <script>
+        // Global variables
+        let currentAnalysisId = null;
+        let pollingInterval = null;
+        let genAIAvailable = false;
+        let pdfSupport = false;
+
+        // Check GenAI availability on load
+        window.addEventListener('load', async () => {
+            try {
+                const response = await fetch('/api/check-genai-status');
+                const data = await response.json();
+                genAIAvailable = data.available;
+                pdfSupport = data.pdf_support;
+
+                // Add AI badge to navbar if available
+                if (genAIAvailable) {
+                    const navLinks = document.querySelector('.nav-links');
+                    const aiBadge = document.createElement('li');
+                    aiBadge.innerHTML = '<span style="background-color: var(--terminal-green); color: black; padding: 3px 8px; border-radius: 10px; font-size: 12px;"><i class="fas fa-robot"></i> AI POWERED</span>';
+                    navLinks.appendChild(aiBadge);
+                }
+            } catch (error) {
+                console.error('Error checking GenAI status:', error);
+            }
+        });
+
+        // Matrix Rain Effect
+        const canvas = document.getElementById('matrix');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789$+-*/=%"\'#&_(),.;:?!\\|{}<>[]^~';
+        const fontSize = 14;
+        const columns = canvas.width / fontSize;
+
+        const drops = [];
+        for (let i = 0; i < columns; i++) {
+            drops[i] = Math.floor(Math.random() * canvas.height / fontSize);
+        }
+
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = '#0f0';
+            ctx.font = `${fontSize}px monospace`;
+
+            for (let i = 0; i < drops.length; i++) {
+                const text = characters.charAt(Math.floor(Math.random() * characters.length));
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+
+                drops[i]++;
+            }
+        }
+
+        setInterval(drawMatrix, 50);
+
+        // Resize canvas when window is resized
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+
+        // File upload handling
+        const fileUpload = document.getElementById('file-upload');
+        const fileName = document.getElementById('file-name');
+
+        fileUpload.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                fileName.textContent = e.target.files[0].name;
+            } else {
+                fileName.textContent = '';
+            }
+        });
+
+        // Form submission handling
+        const fileForm = document.getElementById('file-form');
+        const urlForm = document.getElementById('url-form');
+        const resultsSection = document.getElementById('results-section');
+        const resultsContent = document.getElementById('results-content');
+        const closeResults = document.getElementById('close-results');
+
+        fileForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const file = fileUpload.files[0];
+            if (!file) {
+                showError('Please select a file to analyze');
+                return;
+            }
+
+            // Show results section with initial message
+            showResultsSection();
+            addResultLine('> Initializing file analysis...');
+            addResultLine(`> Selected file: ${file.name}`);
+
+            if (file.name.endsWith('.pdf') && !pdfSupport) {
+                addResultLine('> Warning: PDF support not available. Analysis may be limited.', 'yellow');
+            }
+
+            // Create FormData and submit
+            const formData = new FormData();
+            formData.append('file', file);
+
+            try {
+                const submitBtn = fileForm.querySelector('button[type="submit"]');
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Analyzing...';
+
+                const response = await fetch('/detect-file', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Server returned ${response.status}: ${response.statusText}`);
+                }
+
+                const data = await response.json();
+                currentAnalysisId = data.analysis_id;
+
+                // Start polling for results
+                startPolling(currentAnalysisId);
+
+            } catch (error) {
+                addResultLine(`> Error: ${error.message}`, 'red');
+                console.error('Submission error:', error);
+            } finally {
+                const submitBtn = fileForm.querySelector('button[type="submit"]');
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-search"></i> Analyze File';
+            }
+        });
+
+        urlForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const url = document.getElementById('url-input').value;
+            if (!url) {
+                showError('Please enter a URL to analyze');
+                return;
+            }
+
+            // Show results section with initial message
+            showResultsSection();
+            addResultLine('> Initializing URL analysis...');
+            addResultLine(`> URL to analyze: ${url}`);
+
+            // Create FormData and submit
+            const formData = new FormData();
+            formData.append('url', url);
+
+            try {
+                const submitBtn = urlForm.querySelector('button[type="submit"]');
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Analyzing...';
+
+                const response = await fetch('/detect-url', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Server returned ${response.status}: ${response.statusText}`);
+                }
+
+                const data = await response.json();
+                currentAnalysisId = data.analysis_id;
+
+                // Start polling for results
+                startPolling(currentAnalysisId);
+
+            } catch (error) {
+                addResultLine(`> Error: ${error.message}`, 'red');
+                console.error('Submission error:', error);
+            } finally {
+                const submitBtn = urlForm.querySelector('button[type="submit"]');
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-search"></i> Analyze URL';
+            }
+        });
+
+        closeResults.addEventListener('click', () => {
+            resultsSection.style.display = 'none';
+            stopPolling();
+        });
+
+        function showResultsSection() {
+            resultsSection.style.display = 'block';
+            resultsContent.innerHTML = '';
+            resultsSection.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function showError(message) {
+            showResultsSection();
+            addResultLine(`> Error: ${message}`, 'red');
+        }
+
+        function startPolling(analysisId) {
+            // Clear any existing polling
+            stopPolling();
+
+            // Add initial status message
+            addResultLine('> Analysis in progress. Please wait...', 'blue');
+
+            // Set up polling interval
+            pollingInterval = setInterval(async () => {
+                try {
+                    const response = await fetch(`/analysis-status/${analysisId}`);
+
+                    if (!response.ok) {
+                        if (response.status === 404) {
+                            addResultLine('> Analysis not found or expired.', 'red');
+                            stopPolling();
+                            return;
+                        }
+                        throw new Error(`Server returned ${response.status}: ${response.statusText}`);
+                    }
+
+                    const result = await response.json();
+                    updateResultsDisplay(result);
+
+                    // If analysis is complete, stop polling
+                    if (result.status === 'Complete') {
+                        stopPolling();
+                    }
+
+                } catch (error) {
+                    console.error('Polling error:', error);
+                    addResultLine(`> Error checking analysis status: ${error.message}`, 'red');
+                    stopPolling();
+                }
+            }, 1000); // Poll every second
+        }
+
+        function stopPolling() {
+            if (pollingInterval) {
+                clearInterval(pollingInterval);
+                pollingInterval = null;
+            }
+        }
+
+        function updateResultsDisplay(result) {
+            // Only update if we have new information
+            if (!result) return;
+
+            // Update progress information
+            if (result.progress) {
+                updateProgressBar(result.progress);
+            }
+
+            // If analysis is complete, show the final results
+            if (result.status === 'Complete') {
+                showFinalResults(result);
+            }
+        }
+
+        function updateProgressBar(progress) {
+            // Check if progress bar exists, if not create it
+            let progressBar = document.getElementById('analysis-progress');
+            if (!progressBar) {
+                // Create progress container
+                const progressContainer = document.createElement('div');
+                progressContainer.style.marginTop = '15px';
+                progressContainer.style.marginBottom = '15px';
+
+                // Create progress bar background
+                const progressBg = document.createElement('div');
+                progressBg.style.width = '100%';
+                progressBg.style.backgroundColor = '#333';
+                progressBg.style.borderRadius = '3px';
+                progressBg.style.height = '20px';
+
+                // Create progress bar fill
+                progressBar = document.createElement('div');
+                progressBar.id = 'analysis-progress';
+                progressBar.style.width = '0%';
+                progressBar.style.backgroundColor = 'var(--terminal-green)';
+                progressBar.style.height = '100%';
+                progressBar.style.borderRadius = '3px';
+                progressBar.style.transition = 'width 0.5s ease-in-out';
+                progressBar.style.position = 'relative';
+
+                // Create progress text
+                const progressText = document.createElement('div');
+                progressText.id = 'progress-text';
+                progressText.style.position = 'absolute';
+                progressText.style.top = '0';
+                progressText.style.left = '0';
+                progressText.style.width = '100%';
+                progressText.style.textAlign = 'center';
+                progressText.style.color = '#fff';
+                progressText.style.fontWeight = 'bold';
+                progressText.style.textShadow = '1px 1px 1px rgba(0,0,0,0.5)';
+
+                // Assemble the progress bar
+                progressBar.appendChild(progressText);
+                progressBg.appendChild(progressBar);
+                progressContainer.appendChild(progressBg);
+
+                // Add to results content
+                resultsContent.appendChild(progressContainer);
+            }
+
+            // Update progress bar width and text
+            progressBar.style.width = `${progress}%`;
+            const progressText = document.getElementById('progress-text');
+            if (progressText) {
+                progressText.textContent = `${progress}%`;
+            }
+        }
+
+        function showFinalResults(result) {
+            // Add a separator
+            addResultLine('\n> Analysis complete!', 'blue');
+
+            // Show threat status
+            if (result.is_scam) {
+                addResultLine('> WARNING: THREAT DETECTED!', 'red');
+                addResultLine(`> Confidence: ${result.confidence}%`, 'yellow');
+                if (result.threat_type) {
+                    addResultLine(`> Threat type: ${result.threat_type}`, 'red');
+                }
+            } else {
+                addResultLine('> No threats detected', 'green');
+                addResultLine(`> Confidence: ${result.confidence}%`, 'green');
+            }
+
+            // Show recommendation
+            if (result.recommendation) {
+                addResultLine(`> Recommendation: ${result.recommendation}`, result.is_scam ? 'red' : 'green');
+            }
+
+            // Show suspicious elements if available
+            if (result.suspicious_elements && result.suspicious_elements.length > 0) {
+                addResultLine('\n> Suspicious elements detected:', 'yellow');
+                result.suspicious_elements.forEach((element, index) => {
+                    addResultLine(`>   ${index + 1}. ${element}`, 'yellow');
+                });
+            }
+
+            // Show explanation if available
+            if (result.explanation) {
+                addResultLine('\n> Analysis details:', 'blue');
+                addResultLine(`> ${result.explanation}`);
+            }
+
+            // Show safe alternatives if available (for URLs)
+            if (result.safe_alternatives) {
+                addResultLine('\n> Safe alternatives:', 'green');
+                addResultLine(`> ${result.safe_alternatives}`);
+            }
+
+            // Show safety tips if available (for files)
+            if (result.safety_tips) {
+                addResultLine('\n> Safety tips:', 'blue');
+                addResultLine(`> ${result.safety_tips}`);
+            }
+
+            // Add AI attribution if GenAI was used
+            if (genAIAvailable) {
+                addResultLine('\n> Analysis powered by Generative AI', 'blue');
+            }
+
+            // Add timestamp
+            const now = new Date();
+            addResultLine(`\n> Analysis completed at ${now.toLocaleTimeString()}`, 'blue');
+
+            // Add copy button for results
+            addCopyResultsButton();
+        }
+
+        function addCopyResultsButton() {
+            // Create a container for the button
+            const buttonContainer = document.createElement('div');
+            buttonContainer.style.marginTop = '20px';
+            buttonContainer.style.textAlign = 'center';
+
+            // Create the copy button
+            const copyButton = document.createElement('button');
+            copyButton.className = 'btn';
+            copyButton.style.width = 'auto';
+            copyButton.style.padding = '8px 15px';
+            copyButton.innerHTML = '<i class="fas fa-copy"></i> Copy Analysis Results';
+
+            // Add click event to copy results
+            copyButton.addEventListener('click', () => {
+                // Get all text from results
+                const lines = [];
+                document.querySelectorAll('#results-content .terminal-text').forEach(line => {
+                    lines.push(line.textContent);
+                });
+
+                // Copy to clipboard
+                const textToCopy = lines.join('\n');
+                navigator.clipboard.writeText(textToCopy).then(() => {
+                    copyButton.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                    setTimeout(() => {
+                        copyButton.innerHTML = '<i class="fas fa-copy"></i> Copy Analysis Results';
+                    }, 2000);
+                }).catch(err => {
+                    console.error('Failed to copy: ', err);
+                    copyButton.innerHTML = '<i class="fas fa-times"></i> Failed to copy';
+                    setTimeout(() => {
+                        copyButton.innerHTML = '<i class="fas fa-copy"></i> Copy Analysis Results';
+                    }, 2000);
+                });
+            });
+
+            // Add button to container and container to results
+            buttonContainer.appendChild(copyButton);
+            resultsContent.appendChild(buttonContainer);
+        }
+
+        function addResultLine(text, color = 'green') {
+            const line = document.createElement('div');
+            line.textContent = text;
+            line.classList.add('terminal-text');
+
+            if (color === 'red') {
+                line.style.color = 'var(--terminal-red)';
+            } else if (color === 'yellow') {
+                line.style.color = 'var(--terminal-yellow)';
+            } else if (color === 'blue') {
+                line.style.color = 'var(--terminal-blue)';
+            }
+
+            resultsContent.appendChild(line);
+            resultsContent.scrollTop = resultsContent.scrollHeight;
+        }
+
+        // Typing effect for header
+        const headerText = document.querySelector('.typing-effect');
+        const originalText = headerText.textContent;
+        headerText.textContent = '';
+
+        let i = 0;
+        function typeWriter() {
+            if (i < originalText.length) {
+                headerText.textContent += originalText.charAt(i);
+                i++;
+                setTimeout(typeWriter, 100);
+            }
+        }
+
+        // Start typing effect when page loads
+        window.addEventListener('load', typeWriter);
+    </script>
+</body>
+</html>
